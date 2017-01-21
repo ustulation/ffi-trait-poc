@@ -224,6 +224,8 @@ impl Drop for TwoFfi {
     }
 }
 
+// ----------------------------------------------------------------------
+
 fn main() {
     let two = {
         let string = "SomeString".to_string();
@@ -253,11 +255,12 @@ fn main() {
     };
 
     let mut two_ffi = two.into_repr_c().unwrap();
+    // At this point give to Frontend via callback as `o_cb(&two_ffi);`
 
     const EXPLICIT_DROP: bool = false;
 
     if EXPLICIT_DROP {
         let _ = Two::from_repr_c_owned(&mut two_ffi);
         mem::forget(two_ffi);
-    } /* else it will be implicitly dropped due to Drop impl on TwoFfi */
+    } // else it will be implicitly dropped due to Drop impl on TwoFfi
 }
